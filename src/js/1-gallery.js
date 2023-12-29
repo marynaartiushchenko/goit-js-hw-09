@@ -1,4 +1,5 @@
-import SimpleLightbox from "simplelightbox/dist/simple-lightbox.esm";
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 const images = [
   {
@@ -68,17 +69,24 @@ const images = [
 
 
 const galleryContainer = document.querySelector('.gallery');
-const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 });
+let lightbox = null;
+
+
+lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',  // Use alt attribute for captions
+  captionDelay: 250,    // Delay in milliseconds
+  sourceAttr: 'href',   // Use href attribute for large images
+});
 
 const galleryMarkup = images
   .map(
     (image) => `
-  <li class="gallery-item">
-    <a class="gallery-link" href="${image.original}">
-      <img class="gallery-image" src="${image.preview}" alt="${image.description}" />
-    </a>
-  </li>
-`
+      <li class="gallery-item">
+        <a class="gallery-link" href="${image.original}">
+          <img class="gallery-image" src="${image.preview}" alt="${image.description}" />
+        </a>
+      </li>
+    `
   )
   .join('');
 
