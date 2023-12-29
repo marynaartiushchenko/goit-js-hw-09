@@ -69,14 +69,6 @@ const images = [
 
 
 const galleryContainer = document.querySelector('.gallery');
-let lightbox = null;
-
-
-lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',  // Use alt attribute for captions
-  captionDelay: 250,    // Delay in milliseconds
-  sourceAttr: 'href',   // Use href attribute for large images
-});
 
 const galleryMarkup = images
   .map(
@@ -91,3 +83,21 @@ const galleryMarkup = images
   .join('');
 
 galleryContainer.innerHTML = galleryMarkup;
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
+
+lightbox.on('shown.simplelightbox', (e) => {
+ 
+  setTimeout(() => {
+    const { alt } = e.target;
+    const captionElement = e.target.getElementsByClassName('sl-image-caption')[0];
+    
+    if (captionElement) {
+      captionElement.textContent = alt;
+    }
+  }, 250);
+});
