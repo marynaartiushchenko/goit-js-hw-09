@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const messageInput = feedbackForm.querySelector('textarea[name="message"]');
   const localStorageKey = 'feedback-form-state';
 
+  
   const savedState = JSON.parse(localStorage.getItem(localStorageKey)) || {};
   emailInput.value = savedState.email || '';
   messageInput.value = savedState.message || '';
@@ -21,20 +22,27 @@ document.addEventListener('DOMContentLoaded', () => {
   feedbackForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    
-    if (emailInput.value.trim() === '' || messageInput.value.trim() === '') {
+   
+    const currentState = {
+      email: emailInput.value,
+      message: messageInput.value,
+    };
+    localStorage.setItem(localStorageKey, JSON.stringify(currentState));
+
+   
+    if (currentState.email.trim() === '' || currentState.message.trim() === '') {
       alert('Please fill in both email and message fields.');
-      return; 
+      return;
     }
 
     
     const formData = {
-      email: emailInput.value,
-      message: messageInput.value,
+      email: currentState.email,
+      message: currentState.message,
     };
     console.log(formData);
 
-
+   
     emailInput.value = '';
     messageInput.value = '';
     localStorage.removeItem(localStorageKey);
